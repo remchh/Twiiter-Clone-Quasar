@@ -20,6 +20,7 @@
       </div>
       <div class="col col-shrink">
         <q-btn
+          @click="addNewQtweet"
           :disable="!newQtweet"
           class="q-mb-lg"
           no-caps
@@ -31,18 +32,79 @@
       </div>
     </div>
     <q-separator size="10px" color="grey-2" class="divider"/>
+
+    <q-list separator>
+      <q-item
+        class="q-py-md"
+        v-for="qtweet in qtweets"
+        :key="qtweet.date">
+        <q-item-section avatar top>
+          <q-avatar size="xl">
+            <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label class="text-subtitle1" >
+            <strong>Ghost Shell</strong>
+            <span class="text-grey-7"> ghost__shell2022 </span>
+          </q-item-label>
+          <q-item-label class="qtweet-content text-body1">
+            {{qtweet.content}}
+          </q-item-label>
+          <div class="row justify-between q-mt-sm qtweet-icons ">
+            <q-btn size='sm' flat round color="grey" icon="far fa-comment" />
+            <q-btn size='sm' flat round color="grey" icon="fas fa-retweet" />
+            <q-btn size='sm' flat round color="grey" icon="far fa-heart" />
+            <q-btn
+              size='sm'
+              flat
+              round
+              color="grey"
+              icon="fas fa-trash"
+              @click="deleteQtweet(qtweet)" />
+          </div>
+        </q-item-section>
+
+        <q-item-section side top>
+          {{ relativeDate(qtweet.date) }}
+        </q-item-section>
+      </q-item>
+
+    </q-list>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { formatDistance } from 'date-fns'
+import { defineComponent, ref, computed } from 'vue'
 
 export default defineComponent({
   name: 'HomePage',
   setup(){
     const newQtweet = ref('')
-    return { newQtweet }
-  }
+    const qtweets = ref([
+      {content: 'No os conforméis a este siglo, sino transformaos por medio de la renovación de vuestro entendimiento, para que comprobéis cuál sea la buena voluntad de Dios, agradable y perfecta.', date: 1649561350768},
+      {content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.', date: 1649561360735}
+    ])
+    const addNewQtweet = () => {
+      let newQtweetContent = {
+        content: newQtweet.value,
+        date: Date.now()
+      }
+      qtweets.value.unshift(newQtweetContent)
+      newQtweet.value = ''
+    }
+    const deleteQtweet = qtweet => {
+      let dateToDelete = qtweet.date
+      let index = qtweets.value.findIndex(qtweet => qtweet.date === dateToDelete)
+      qtweets.value.splice(index, 1)
+    }
+    const relativeDate = (value) => {
+      return formatDistance(value, new Date())
+    }
+    return { newQtweet, qtweets, relativeDate, addNewQtweet, deleteQtweet }
+  },
 })
 
 </script>
@@ -56,5 +118,10 @@ export default defineComponent({
   border-top: 1px solid
   border-bottom: 1px solid
   border-color: $grey-4
+.qtweet-content
+  white-space: pre-line
+.qtweet-icons
+  margin-left: -5px
+
 </style>
 
