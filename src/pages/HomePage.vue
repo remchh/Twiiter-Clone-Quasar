@@ -1,77 +1,82 @@
 <template>
-  <q-page >
-    <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
-      <div class="col">
-        <q-input
-          bottom-slots
-          v-model="newQtweet"
-          placeholder="What's happening?"
-          counter
-          maxlength="280"
-          autogrow
-          class="new-qweet"
-        >        
-        <template v-slot:before>
-          <q-avatar size="xl">
-            <img src="https://cdn.quasar.dev/img/avatar5.jpg">
-          </q-avatar>
-        </template>
-        </q-input>
+  <q-page class="relative-position">
+    <q-scroll-area class="absolute fullscreen">
+      <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
+        <div class="col">
+          <q-input
+            bottom-slots
+            v-model="newQtweet"
+            placeholder="What's happening?"
+            counter
+            maxlength="280"
+            autogrow
+            class="new-qweet"
+          >        
+          <template v-slot:before>
+            <q-avatar size="xl">
+              <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+            </q-avatar>
+          </template>
+          </q-input>
+        </div>
+        <div class="col col-shrink">
+          <q-btn
+            @click="addNewQtweet"
+            :disable="!newQtweet"
+            class="q-mb-lg"
+            no-caps
+            unelevated
+            rounded
+            color="primary"
+            label="Qtweet" 
+          />
+        </div>
       </div>
-      <div class="col col-shrink">
-        <q-btn
-          @click="addNewQtweet"
-          :disable="!newQtweet"
-          class="q-mb-lg"
-          no-caps
-          unelevated
-          rounded
-          color="primary"
-          label="Qtweet" 
-        />
-      </div>
-    </div>
-    <q-separator size="10px" color="grey-2" class="divider"/>
+        <q-separator size="10px" color="grey-2" class="divider"/>
+        <q-list separator>
+          <transition-group
+            appear
+            enter-active-class="animated fadeIn slow"
+            leave-active-class="animated fadeOut slow"
+            >
+            <q-item
+                class="q-py-md"
+                v-for="qtweet in qtweets"
+                :key="qtweet.date">
+              <q-item-section avatar top>
+                <q-avatar size="xl">
+                  <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+                </q-avatar>
+              </q-item-section>
 
-    <q-list separator>
-      <q-item
-        class="q-py-md"
-        v-for="qtweet in qtweets"
-        :key="qtweet.date">
-        <q-item-section avatar top>
-          <q-avatar size="xl">
-            <img src="https://cdn.quasar.dev/img/avatar5.jpg">
-          </q-avatar>
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label class="text-subtitle1" >
-            <strong>Ghost Shell</strong>
-            <span class="text-grey-7"> ghost__shell2022 </span>
-          </q-item-label>
-          <q-item-label class="qtweet-content text-body1">
-            {{qtweet.content}}
-          </q-item-label>
-          <div class="row justify-between q-mt-sm qtweet-icons ">
-            <q-btn size='sm' flat round color="grey" icon="far fa-comment" />
-            <q-btn size='sm' flat round color="grey" icon="fas fa-retweet" />
-            <q-btn size='sm' flat round color="grey" icon="far fa-heart" />
-            <q-btn
-              size='sm'
-              flat
-              round
-              color="grey"
-              icon="fas fa-trash"
-              @click="deleteQtweet(qtweet)" />
-          </div>
-        </q-item-section>
-
-        <q-item-section side top>
-          {{ relativeDate(qtweet.date) }}
-        </q-item-section>
-      </q-item>
-
-    </q-list>
+              <q-item-section>
+                <q-item-label class="text-subtitle1" >
+                  <strong>Ghost Shell</strong>
+                  <span class="text-grey-7"> 
+                    ghost__shell2022
+                    <br class="lt-md">&bull; {{ relativeDate(qtweet.date) }}
+                  </span>
+                </q-item-label>
+                <q-item-label class="qtweet-content text-body1">
+                  {{qtweet.content}}
+                </q-item-label>
+                <div class="row justify-between q-mt-sm qtweet-icons ">
+                  <q-btn size='sm' flat round color="grey" icon="far fa-comment" />
+                  <q-btn size='sm' flat round color="grey" icon="fas fa-retweet" />
+                  <q-btn size='sm' flat round color="grey" icon="far fa-heart" />
+                  <q-btn
+                    size='sm'
+                    flat
+                    round
+                    color="grey"
+                    icon="fas fa-trash"
+                    @click="deleteQtweet(qtweet)" />
+                </div>
+              </q-item-section>
+            </q-item>
+          </transition-group > 
+        </q-list>   
+    </q-scroll-area> 
   </q-page>
 </template>
 
