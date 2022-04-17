@@ -8,10 +8,10 @@
         <q-toolbar-title class="text-weight-bold">
           <span class="gt-sm">{{ $route.name }}</span>
           <q-icon
-            name="fa-brands lt-md fa-earlybirds absolute-center"
+            class="q-pa-md lt-md header-icon" 
+            name="fa-brands fa-earlybirds"
             size="sm"
             color="primary"
-            class="q-pa-md" 
           />
         </q-toolbar-title>
 
@@ -153,5 +153,5 @@ export default {
   position: absolute
   bottom: 0
   left: 50%
-  transform: translate(-50%)
+  transform: translateX(-50%)
 </style>
